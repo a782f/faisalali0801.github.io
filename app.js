@@ -40,6 +40,7 @@ const PROJECTS = [
      image: "Project_2.png",
     // Replace with your repo or a detail page when ready:
     link: "https://github.com/a782f"
+     featured: true
   }
 
   /* ---- TEMPLATE: copy this into the array above to add a project ----
