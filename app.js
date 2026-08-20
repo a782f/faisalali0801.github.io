@@ -25,7 +25,8 @@ const PROJECTS = [
     blurb: "A custom, fully modifiable vision-guided cell that detects empty battery-holder slots and autonomously restocks them via vacuum pick-and-place — matching commercial machine-vision accuracy on commodity hardware. MS Report, Michigan Technological University.",
     tags: ["FANUC LR Mate 200iC", "Jetson Orin Nano", "YOLOv11", "Micro850 PLC", "OpenCV", "Modbus TCP", "EtherNet/IP", "PyQt5"],
     metric: { value: "0.93 mm", label: "aggregate RMS · vs iRVision" },
-    status: "MS Report",
+    status: "Research Project",
+     image: "Hardware_Collage.png",
     link: "battery-handling.html",
     featured: true
   },
@@ -36,6 +37,7 @@ const PROJECTS = [
     tags: ["Siemens S7-1200", "Ignition SCADA", "TIA Portal", "OPC UA", "RFID", "Ladder Logic"],
     metric: { value: "250 /hr", label: "throughput · bottles" },
     status: "Team project",
+     image: "Project_2.png",
     // Replace with your repo or a detail page when ready:
     link: "https://github.com/a782f"
   }
