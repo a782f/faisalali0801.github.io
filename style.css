@@ -269,3 +269,13 @@ footer.foot span { font-family: var(--mono); font-size: 0.78rem; letter-spacing:
 .media-cap { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.04em; margin: -1rem 0 1.8rem; }
 
 .detail-foot { margin-top: 3rem; }
+/* data table (detail pages) */
+.table-wrap { overflow-x: auto; margin: 1.6rem 0 0.4rem; border: 1px solid var(--hair); }
+.dtable { border-collapse: collapse; width: 100%; min-width: 720px; font-family: var(--mono); font-size: 0.8rem; }
+.dtable th, .dtable td { text-align: left; padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.dtable thead th { color: var(--signal); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; font-weight: 600; }
+.dtable tbody tr:last-child td { border-bottom: none; }
+.dtable td { color: var(--ink-soft); }
+.dtable td:first-child { color: var(--ink); }
+
+
