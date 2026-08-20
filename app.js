@@ -35,7 +35,7 @@ const PROJECTS = [
     title: "Automated Tablet Filling Station with SCADA",
     blurb: "A PLC-driven pharmaceutical filling cell: RFID-based recipe sorting, hopper dispensing, and bottle counting, integrated into an existing Amatrol station without altering its original wiring. Siemens S7-1200 with Ignition SCADA over OPC UA.",
     tags: ["Siemens S7-1200", "Ignition SCADA", "TIA Portal", "OPC UA", "RFID", "Ladder Logic"],
-    metric: { value: "250 /hr", label: "throughput · bottles" },
+    metric: { value: "65 /hr", label: "throughput · bottles" },
     status: "Team project",
      image: "Project_2.png",
     // Replace with your repo or a detail page when ready:
