@@ -37,7 +37,7 @@ const PROJECTS = [
     metric: { value: "250 /hr", label: "throughput · bottles" },
     status: "Team project",
     // Replace with your repo or a detail page when ready:
-    link: "https://github.com/faisalali0801"
+    link: "https://github.com/a782f"
   }
 
   /* ---- TEMPLATE: copy this into the array above to add a project ----
