@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision-Guided Battery Handling — Faisal Ali</title>
+<meta name="description" content="A custom vision-guided robotic cell for automated battery handling, matching commercial machine-vision accuracy on commodity hardware.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <span class="mark">F.<b>ALI</b> · METROLOGY-GRADE AUTOMATION</span>
+  <nav>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- ======================= DETAIL HERO ======================= -->
+  <section class="detail-hero">
+    <a class="back" href="index.html#work">&larr; All work</a>
+    <div class="label"><span class="tick">+</span> P-01 · MS REPORT · MICHIGAN TECH</div>
+    <h1>Vision-Guided Battery Handling for Industrial Robots</h1>
+    <p class="sub">
+      A custom, fully modifiable vision-guided cell that detects empty
+      battery-holder slots and autonomously restocks them via vacuum
+      pick-and-place — reaching commercial machine-vision accuracy on
+      commodity hardware.
+    </p>
+
+    <div class="specbar">
+      <div class="cell"><span class="k">Accuracy</span><span class="v">0.93 mm RMS</span></div>
+      <div class="cell"><span class="k">Placement tol.</span><span class="v">2.4 mm</span></div>
+      <div class="cell"><span class="k">Classifier</span><span class="v">100% top-1</span></div>
+      <div class="cell"><span class="k">Run modes</span><span class="v">Guided + Auto</span></div>
+    </div>
+  </section>
+
+  <!-- ======================= PROSE ======================= -->
+  <article class="prose">
+    <h2><span class="n">00</span> The problem</h2>
+    <p>
+      Modern battery packs hold thousands of cylindrical cells, and teaching each
+      cell position by hand on an industrial robot doesn't scale — any change to
+      the pack or fixture means re-teaching the entire set. Vision guidance solves
+      this, but commercial systems like FANUC iRVision are closed: their
+      calibration, detection, and coordinate-conversion stages are hidden from the
+      user, which makes it hard to plug in custom deep-learning models like YOLO.
+      I wanted a pipeline where every stage, from raw image to robot coordinate,
+      is exposed and modifiable.
+    </p>
+
+    <h2><span class="n">01</span> System</h2>
+    <p>
+      At the center is an NVIDIA Jetson Orin Nano Super, which runs the entire
+      operation — camera streaming, YOLOv11 inference, the full camera-to-robot
+      coordinate transformation, the operator interface, and all communication
+      with the rest of the cell. Rather than a controller sequencing the robot,
+      the Jetson is the brain: every decision about what the robot does next
+      originates on the host.
+    </p>
+    <div class="stack">Jetson Orin Nano Super   vision processing + coordination
+FANUC LR Mate 200iC      motion execution (R-30iA controller)
+Allen-Bradley Micro850   I/O sequencing + safety interlocks (2080-LC50-24QBB)
+Orbbec Gemini 435Le      eye-in-hand camera (perception)
+Modbus TCP               Jetson  ->  PLC
+EtherNet/IP              PLC     ->  robot</div>
+    <p>
+      A per-hole classifier resolves each known slot as present, absent, or
+      flipped, and the cell autonomously restocks empty slots via vacuum
+      pick-and-place from a spare holder, in both operator-guided and fully
+      autonomous modes.
+    </p>
+
+    <h2><span class="n">02</span> Perception on the edge</h2>
+    <p>
+      An AprilTag affixed to the holder fixes the geometry of a rigid eight-hole
+      overlay from CAD, and a YOLOv11n-cls classifier runs on 96&times;96
+      grayscale crops — one per hole — directly on the Jetson. Because the overlay
+      isolates each hole as its own crop, a single captured image yields eight
+      labeled samples, so the entire classifier was trained from just 28 images
+      (224 crops) and reached 100% top-1 accuracy on the held-out set.
+    </p>
+    <p>
+      Anchoring hole identity to the AprilTag rather than to appearance means each
+      slot keeps a fixed index that maps cleanly to its taught robot position —
+      solving the unstable hole-numbering that an appearance-based detector
+      couldn't guarantee from run to run.
+    </p>
+
+    <h2><span class="n">03</span> Coordinate transformation</h2>
+    <p>
+      The Jetson runs a two-stage calibration — a 17-point homography fit at the
+      part-height plane, plus a least-squares affine post-correction that absorbs
+      residual error from a physically warped calibration grid — converting every
+      pixel location into a robot user-frame coordinate before it ever leaves the
+      host.
+    </p>
+    <p>
+      Vision-computed X / Y / Z / Roll targets then pass from the Jetson through
+      the PLC into the FANUC via Group I/O, all driving a single position
+      register. The robot runs one motion instruction while the Jetson
+      continuously rewrites that register to retarget every pick and place —
+      keeping teach-pendant code minimal and all path logic on the host side.
+    </p>
+    <p>
+      Each move is gated on real position feedback: the Jetson polls the robot's
+      live pose over HTTP (CURPOS.DG) at ~10 Hz and blocks until confirmed
+      arrival, keeping vision, PLC, and robot in lockstep.
+    </p>
+
+    <h2><span class="n">04</span> Results</h2>
+    <p>
+      The system achieved <strong>0.93 mm aggregate RMS</strong> positioning
+      accuracy across eight validation runs — comfortably inside the holder's
+      2.4 mm placement tolerance, where a tapered lead-in guides each battery into
+      its hole. Benchmarked against two FANUC iRVision configurations on the same
+      task (fixed-mounted 200iC at 0.904 mm, robot-mounted 200iD at 0.756 mm), the
+      custom pipeline delivered comparable accuracy — despite using only a
+      17-point homography, no full perspective camera model, and no sub-pixel
+      refinement.
+    </p>
+
+    <h2><span class="n">05</span> Why it matters</h2>
+    <p>
+      Because the full perception-to-motion chain is custom-built and fully
+      modifiable rather than locked inside a closed vendor stack, it establishes a
+      calibrated, sub-millimeter foundation for integrating LLM/VLM planners into
+      industrial manipulation. The longer-term goal is scalable cylindrical-cell
+      pack assembly across formats such as 18650, 21700, and 4680. A planned
+      sensor-optics upgrade projects a positioning floor approaching the robot's
+      own &plusmn;0.02 mm mechanical repeatability.
+    </p>
+
+    <div class="detail-foot">
+      <a class="back" href="index.html#work">&larr; Back to all work</a>
+    </div>
+  </article>
+</main>
+
+<footer class="foot">
+  <span>FAISAL ALI · © 2026</span>
+  <span>HOUGHTON, MI</span>
+</footer>
+
+</body>
+</html>

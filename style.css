@@ -1,0 +1,262 @@
+/* =====================================================================
+   Faisal Ali — Portfolio
+   Design language: coordinate metrology. Calibration-grid ground,
+   detected-feature crosshairs, monospace data readouts. One accent.
+   ===================================================================== */
+
+:root {
+  --paper:      #ECEEEA;   /* cool engineering-paper ground */
+  --paper-2:    #E3E6E0;   /* slightly deeper panel */
+  --ink:        #16191C;   /* near-black text */
+  --ink-soft:   #4A5157;   /* secondary text */
+  --hair:       #C6CAC1;   /* hairline / grid rule */
+  --signal:     #E4571B;   /* single accent — active/signal orange */
+  --white:      #F6F7F4;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --display: "Space Grotesk", var(--sans);
+
+  --wrap: 1080px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background-color: var(--paper);
+  /* calibration-grid ground: two hairline scales */
+  background-image:
+    linear-gradient(to right,  rgba(22,25,28,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22,25,28,0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+a { color: inherit; }
+
+/* ---- utility: mono label / eyebrow ---- */
+.label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.label .tick { color: var(--signal); }
+
+/* =====================================================================
+   TOP BAR
+   ===================================================================== */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem var(--gutter);
+  border-bottom: 1px solid var(--hair);
+  background: rgba(236,238,234,0.82);
+  backdrop-filter: blur(6px);
+}
+.topbar .mark {
+  font-family: var(--mono);
+  font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.topbar .mark b { color: var(--signal); font-weight: 600; }
+.topbar nav { display: flex; gap: 1.4rem; }
+.topbar nav a {
+  font-family: var(--mono); font-size: 0.75rem;
+  letter-spacing: 0.08em; text-decoration: none; color: var(--ink-soft);
+  padding-bottom: 2px; border-bottom: 1px solid transparent;
+}
+.topbar nav a:hover { color: var(--ink); border-color: var(--signal); }
+@media (max-width: 620px) { .topbar nav { display: none; } }
+
+/* =====================================================================
+   HERO — the thesis: sub-mm custom vision matching a commercial system
+   ===================================================================== */
+.hero { padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 6vw, 4rem); }
+.hero .eyebrow { margin-bottom: 1.4rem; }
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6.4vw, 4.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.2rem;
+  max-width: 16ch;
+}
+.hero .lede {
+  font-size: clamp(1.02rem, 1.6vw, 1.22rem);
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0 0 2.6rem;
+}
+.hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+.btn {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.06em; text-decoration: none;
+  padding: 0.7rem 1.1rem; border: 1px solid var(--ink);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: background .15s ease, color .15s ease;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn.primary:hover { background: var(--signal); border-color: var(--signal); }
+
+/* metrology callout: the flagship measurement, framed like a readout */
+.callout {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  border: 1px solid var(--hair);
+  background: var(--white);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+}
+@media (max-width: 720px) { .callout { grid-template-columns: 1fr; } }
+
+.callout .figure {
+  position: relative;
+  padding: clamp(1.6rem, 4vw, 2.6rem);
+  border-right: 1px solid var(--hair);
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: 210px;
+}
+@media (max-width: 720px) { .callout .figure { border-right: none; border-bottom: 1px solid var(--hair); } }
+
+.callout .figure .val {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(3.2rem, 9vw, 5.4rem); line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.callout .figure .val small { font-size: 0.32em; font-weight: 500; color: var(--ink-soft); margin-left: 0.4em; letter-spacing: 0; }
+.callout .figure .cap { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-top: 0.9rem; }
+
+/* crosshair on the measurement, like a detected feature */
+.callout .figure::before,
+.callout .figure::after {
+  content: ""; position: absolute; background: var(--signal);
+}
+.callout .figure::before { top: 1.1rem; left: 1.1rem; width: 14px; height: 1px; }
+.callout .figure::after  { top: 0.6rem; left: 1.55rem; width: 1px; height: 14px; }
+
+.callout .compare { padding: clamp(1.6rem, 4vw, 2.6rem); display: flex; flex-direction: column; justify-content: center; gap: 0.9rem; }
+.callout .compare .row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px dotted var(--hair); padding-bottom: 0.55rem; }
+.callout .compare .row:last-child { border-bottom: none; }
+.callout .compare .row .k { font-size: 0.9rem; color: var(--ink-soft); }
+.callout .compare .row .v { font-family: var(--mono); font-size: 0.95rem; }
+.callout .compare .note { font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.2rem; }
+
+/* =====================================================================
+   SECTION SCAFFOLD
+   ===================================================================== */
+.section { padding: clamp(3rem, 8vw, 5.5rem) 0; border-top: 1px solid var(--hair); }
+.section-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.4rem; }
+.section-head .idx { font-family: var(--mono); font-size: 0.78rem; color: var(--signal); letter-spacing: 0.1em; }
+.section-head h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.5rem, 3.4vw, 2.2rem); letter-spacing: -0.01em; margin: 0; }
+
+/* =====================================================================
+   PROJECT GRID  (rendered from app.js)
+   ===================================================================== */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); }
+@media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+
+.card {
+  position: relative;
+  background: var(--white);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  display: flex; flex-direction: column; gap: 0.9rem;
+  text-decoration: none; color: inherit;
+  min-height: 230px;
+  transition: background .15s ease;
+}
+a.card:hover { background: var(--paper); }
+.card.featured { grid-column: 1 / -1; }
+
+/* corner crosshair ticks — detected-feature marker */
+.card::before, .card::after {
+  content: ""; position: absolute; top: 0.9rem; right: 0.9rem;
+  background: var(--hair);
+}
+.card::before { width: 12px; height: 1px; }
+.card::after  { top: 0.4rem; right: 1.4rem; width: 1px; height: 12px; }
+a.card:hover::before, a.card:hover::after { background: var(--signal); }
+
+.card .cardtop { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.card .pid { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-soft); }
+.card .status { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
+
+.card h3 { font-family: var(--display); font-weight: 600; font-size: clamp(1.15rem, 2.4vw, 1.5rem); line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
+.card.featured h3 { font-size: clamp(1.4rem, 3.2vw, 2rem); max-width: 22ch; }
+.card p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; max-width: 60ch; }
+
+.card .metric { margin-top: auto; display: flex; align-items: baseline; gap: 0.5rem; }
+.card .metric .m-val { font-family: var(--display); font-weight: 700; font-size: 1.4rem; }
+.card .metric .m-lab { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tags span { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.04em; color: var(--ink-soft); border: 1px solid var(--hair); padding: 0.18rem 0.5rem; }
+
+.card .go { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink); display: inline-flex; align-items: center; gap: 0.4rem; }
+.card .go .arw { color: var(--signal); transition: transform .15s ease; }
+a.card:hover .go .arw { transform: translateX(4px); }
+
+/* reveal on scroll */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* =====================================================================
+   ABOUT
+   ===================================================================== */
+.about { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(1.5rem, 5vw, 4rem); }
+@media (max-width: 720px) { .about { grid-template-columns: 1fr; } }
+.about .who p { font-size: 1.02rem; }
+.about .who p + p { margin-top: 1rem; }
+.about dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.55rem 1.2rem; align-content: start; }
+.about dt { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); white-space: nowrap; }
+.about dd { margin: 0; font-size: 0.94rem; }
+
+/* =====================================================================
+   CONTACT / FOOTER
+   ===================================================================== */
+.contact { text-align: left; }
+.contact h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.6rem); margin: 0 0 1.4rem; letter-spacing: -0.01em; }
+.contact .links { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+footer.foot { border-top: 1px solid var(--hair); padding: 1.6rem var(--gutter); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
+footer.foot span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--ink-soft); }
+
+/* =====================================================================
+   PROJECT DETAIL PAGE
+   ===================================================================== */
+.detail-hero { padding: clamp(3rem, 8vw, 5rem) 0 clamp(1.5rem, 4vw, 2.5rem); }
+.back { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.06em; text-decoration: none; color: var(--ink-soft); display: inline-flex; gap: 0.4rem; align-items: center; margin-bottom: 2rem; }
+.back:hover { color: var(--signal); }
+.detail-hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 5.4vw, 3.6rem); line-height: 1.04; letter-spacing: -0.02em; margin: 0.6rem 0 1rem; max-width: 20ch; }
+.detail-hero .sub { font-size: clamp(1rem, 1.6vw, 1.18rem); color: var(--ink-soft); max-width: 60ch; }
+
+.specbar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin: 2.4rem 0; }
+@media (max-width: 620px) { .specbar { grid-template-columns: repeat(2, 1fr); } }
+.specbar .cell { background: var(--white); padding: 1.1rem 1.2rem; }
+.specbar .cell .k { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-bottom: 0.4rem; }
+.specbar .cell .v { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
+
+.prose { max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.3rem, 3vw, 1.7rem); letter-spacing: -0.01em; margin: 2.6rem 0 0.9rem; display: flex; align-items: baseline; gap: 0.7rem; }
+.prose h2 .n { font-family: var(--mono); font-size: 0.72rem; color: var(--signal); }
+.prose p { margin: 0 0 1rem; color: #23282d; }
+.prose ul { margin: 0 0 1rem; padding-left: 0; list-style: none; }
+.prose ul li { position: relative; padding-left: 1.4rem; margin-bottom: 0.6rem; color: #23282d; }
+.prose ul li::before { content: "+"; position: absolute; left: 0; color: var(--signal); font-family: var(--mono); }
+.prose .stack { font-family: var(--mono); font-size: 0.9rem; background: var(--white); border: 1px solid var(--hair); padding: 1rem 1.2rem; overflow-x: auto; white-space: pre-wrap; }
+.prose strong { font-weight: 600; }
+
+.detail-foot { margin-top: 3rem; }

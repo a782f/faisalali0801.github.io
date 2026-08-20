@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faisal Ali — Automation &amp; Machine Vision Engineer</title>
+<meta name="description" content="Faisal Ali — mechatronics engineer working in industrial automation, robotics, and machine vision. Projects, write-ups, and results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <span class="mark">F.<b>ALI</b> · METROLOGY-GRADE AUTOMATION</span>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ============================ HERO ============================ -->
+  <section class="hero wrap">
+    <div class="label eyebrow"><span class="tick">+</span> MECHATRONICS · ROBOTICS · MACHINE VISION</div>
+    <h1>Building vision-guided systems that hit sub-millimeter.</h1>
+    <p class="lede">
+      I'm Faisal Ali — a mechatronics engineer working where cameras, PLCs, and
+      industrial robots meet. I build the full perception-to-motion chain, from
+      pixel to robot coordinate, and keep every stage open enough to swap in
+      custom deep-learning models.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#work">See the work <span>&rarr;</span></a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+
+    <!-- metrology callout: the flagship result as a readout -->
+    <div class="callout">
+      <div class="figure">
+        <div class="val">0.93<small>mm RMS</small></div>
+        <div class="cap">Custom vision pipeline · 8 validation runs</div>
+      </div>
+      <div class="compare">
+        <div class="row"><span class="k">FANUC iRVision — fixed 200iC</span><span class="v">0.904 mm</span></div>
+        <div class="row"><span class="k">FANUC iRVision — robot 200iD</span><span class="v">0.756 mm</span></div>
+        <div class="row"><span class="k">Custom (Orbbec + Jetson)</span><span class="v">0.930 mm</span></div>
+        <p class="note">Commodity hardware, benchmarked on the same task against a commercial machine-vision system.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ WORK ============================ -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="idx">01</span>
+        <h2>Selected work</h2>
+      </div>
+      <div class="grid" id="project-grid"><!-- rendered by app.js --></div>
+    </div>
+  </section>
+
+  <!-- ============================ ABOUT ============================ -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="idx">02</span>
+        <h2>About</h2>
+      </div>
+      <div class="about">
+        <div class="who">
+          <p>
+            I work on industrial automation and robotics — PLC programming,
+            robot integration, and increasingly the machine-vision layer that
+            tells a robot where to go. My recent focus is camera-to-robot
+            calibration and learning-based perception on embedded hardware.
+          </p>
+          <p>
+            Before graduate school I spent two years in technical sales at TE
+            Connectivity, supporting OEMs through line-down situations across
+            connectors, sensors, and relays — so I'm comfortable talking
+            engineering with a customer's technical team and translating it into
+            terms the business side signs off on.
+          </p>
+        </div>
+        <dl>
+          <dt>Focus</dt><dd>Industrial automation, robotics, machine vision</dd>
+          <dt>Robots</dt><dd>FANUC (TP, iRVision, RoboGuide), Mitsubishi (RT ToolBox3)</dd>
+          <dt>PLC</dt><dd>Siemens TIA Portal, Allen-Bradley, Schneider, Mitsubishi</dd>
+          <dt>Vision</dt><dd>YOLO, OpenCV, HALCON, camera/lens/lighting selection</dd>
+          <dt>Code</dt><dd>Python, PyQt5, MATLAB, Linux</dd>
+          <dt>Degree</dt><dd>MS Mechatronics, Michigan Technological University</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================ -->
+  <section class="section contact" id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="idx">03</span>
+        <h2>Contact</h2>
+      </div>
+      <div class="links">
+        <a class="btn primary" href="mailto:ffaisala@mtu.edu">ffaisala@mtu.edu</a>
+        <a class="btn" href="https://www.linkedin.com/in/faisalali0801" target="_blank" rel="noopener">LinkedIn &rarr;</a>
+        <a class="btn" href="https://github.com/faisalali0801" target="_blank" rel="noopener">GitHub &rarr;</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>FAISAL ALI · © 2026</span>
+  <span>HOUGHTON, MI</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
