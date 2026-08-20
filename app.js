@@ -39,7 +39,7 @@ const PROJECTS = [
     status: "Team project",
      image: "Project_2.png",
     // Replace with your repo or a detail page when ready:
-    link: "https://github.com/a782f"
+    link: "https://github.com/a782f",
      featured: true
   }
 
