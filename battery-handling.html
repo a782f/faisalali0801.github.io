@@ -13,7 +13,7 @@
 <body>
 
 <header class="topbar">
-  <span class="mark">F.<b>ALI</b> · METROLOGY-GRADE AUTOMATION</span>
+  <span class="mark">F.<b>ALI</b> · Edge Device + Industrial Robot </span>
   <nav>
     <a href="index.html#work">Work</a>
     <a href="index.html#about">About</a>
@@ -25,18 +25,17 @@
   <!-- ======================= DETAIL HERO ======================= -->
   <section class="detail-hero">
     <a class="back" href="index.html#work">&larr; All work</a>
-    <div class="label"><span class="tick">+</span> P-01 · MS REPORT · MICHIGAN TECH</div>
+    <div class="label"><span class="tick">+</span> P-01 </div>
     <h1>Vision-Guided Battery Handling for Industrial Robots</h1>
     <p class="sub">
-      A custom, fully modifiable vision-guided cell that detects empty
-      battery-holder slots and autonomously restocks them via vacuum
+      A custom, modifiable vision-guided cell that detects empty/partially empty
+      battery-holder holes and autonomously restocks them via vacuum
       pick-and-place — reaching commercial machine-vision accuracy on
       commodity hardware.
     </p>
 
     <div class="specbar">
       <div class="cell"><span class="k">Accuracy</span><span class="v">0.93 mm RMS</span></div>
-      <div class="cell"><span class="k">Placement tol.</span><span class="v">2.4 mm</span></div>
       <div class="cell"><span class="k">Classifier</span><span class="v">100% top-1</span></div>
       <div class="cell"><span class="k">Run modes</span><span class="v">Guided + Auto</span></div>
     </div>
@@ -71,6 +70,7 @@ Allen-Bradley Micro850   I/O sequencing + safety interlocks (2080-LC50-24QBB)
 Orbbec Gemini 435Le      eye-in-hand camera (perception)
 Modbus TCP               Jetson  ->  PLC
 EtherNet/IP              PLC     ->  robot</div>
+    <img src="battery_refill_auto_cycle_flowchart.png" alt="Vision-guided battery cell Workflow" class="media">
     <p>
       A per-hole classifier resolves each known slot as present, absent, or
       flipped, and the cell autonomously restocks empty slots via vacuum
@@ -108,11 +108,37 @@ EtherNet/IP              PLC     ->  robot</div>
       register. The robot runs one motion instruction while the Jetson
       continuously rewrites that register to retarget every pick and place —
       keeping teach-pendant code minimal and all path logic on the host side.
+            <div class="table-wrap">
+      <table class="dtable">
+        <thead>
+          <tr>
+            <th>Coordinate</th><th>Jetson reg</th><th>Modbus name</th><th>PLC out</th><th>Robot DI</th><th>Robot GI</th><th>TP register</th><th>Final PR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>X integer</td><td>400001</td><td>X_Integer_R2</td><td>O[1]</td><td>DI[121–136]</td><td>GI[1]</td><td>R[1]</td><td>—</td></tr>
+          <tr><td>X decimal</td><td>400002</td><td>X_Decimal_R2</td><td>O[2]</td><td>DI[137–152]</td><td>GI[2]</td><td>R[2] (÷1000)</td><td>—</td></tr>
+          <tr><td>X total</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R[5:AN]=R[1]+R[2]</td><td>PR[71,1]</td></tr>
+          <tr><td>Y integer</td><td>400003</td><td>Y_Integer_R2</td><td>O[3]</td><td>DI[153–168]</td><td>GI[3]</td><td>R[3]</td><td>—</td></tr>
+          <tr><td>Y decimal</td><td>400004</td><td>Y_Decimal_R2</td><td>O[4]</td><td>DI[169–184]</td><td>GI[4]</td><td>R[4] (÷1000)</td><td>—</td></tr>
+          <tr><td>Y total</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R[6]=R[3]+R[4]</td><td>PR[71,2]</td></tr>
+          <tr><td>Roll integer</td><td>400005</td><td>Roll_R2_Integer</td><td>O[5]</td><td>DI[185–200]</td><td>GI[5]</td><td>R[7]</td><td>—</td></tr>
+          <tr><td>Roll decimal</td><td>400006</td><td>Roll_R2_Decimal</td><td>O[6]</td><td>DI[201–216]</td><td>GI[6]</td><td>R[8] (÷1000)</td><td>—</td></tr>
+          <tr><td>Roll total</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R[9]=R[7]+R[10]</td><td>PR[71,6]</td></tr>
+          <tr><td>Z integer</td><td>400007</td><td>Z_Integer_R2</td><td>O[7]</td><td>DI[217–232]</td><td>GI[7]</td><td>R[11:Zint]</td><td>—</td></tr>
+          <tr><td>Z decimal</td><td>400008</td><td>Z_Decimal_R2</td><td>O[8]</td><td>DI[233–249]</td><td>GI[8]</td><td>R[12:Zdec] (÷1000)</td><td>—</td></tr>
+          <tr><td>Z total</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R[13:Ztotal]</td><td>PR[71,3]</td></tr>
+          <tr><td>Roll sign</td><td>coil 000001</td><td>Roll_Sign</td><td>—</td><td>DI[265]</td><td>—</td><td>sign logic (LBL[4])</td><td>applied to R[9]</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="media-cap">Coordinate mapping across the Jetson, Micro850 PLC, and FANUC R-30iA controller.</p>
     </p>
     <p>
       Each move is gated on real position feedback: the Jetson polls the robot's
       live pose over HTTP (CURPOS.DG) at ~10 Hz and blocks until confirmed
       arrival, keeping vision, PLC, and robot in lockstep.
+      <img src="Communication_architecture.png" alt="Communication Architecture" class="media">
     </p>
 
     <h2><span class="n">04</span> Results</h2>
