@@ -74,6 +74,7 @@ const PROJECTS = [
       ? `<span class="go">View project <span class="arw">&rarr;</span></span>`
       : "";
     const inner = `
+    ${p.image ? `<img class="card-img" src="${esc(p.image)}" alt="">` : ""}
       <div class="cardtop">
         <span class="pid">${esc(p.pid)}</span>
         ${p.status ? `<span class="status">${esc(p.status)}</span>` : ""}
